@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stagiaires MyBetaApps - Gestion des stagiaires</title>
+    <style>
+        h1 {
+            font-size: 36px;
+            color: rgb(79, 79, 204);
+            background-color: rgb(178, 221, 236);
+            padding: 10px;
+            text-align: center;
+        }
+
+        #ajoutStagiaire {
+            color: rgb(16, 91, 16);
+            background-color: rgb(186, 245, 186);
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        #listeStagiaires {
+            color: rgb(33, 34, 34);
+            background-color: rgb(208, 213, 208);
+            padding: 10px;
+            margin-bottom: 20px;
+            height: 100vh; 
+            overflow-y: auto; 
+        }
+
+        #ajoutStagiaire label,
+        #ajoutStagiaire button {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        #ajoutStagiaire button {
+            color: white;
+            background-color: rgb(29, 115, 207);
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        
+        #listeStagiaires button {
+            background-color: red !important;
+        }
+
+        
+        table {
+            width: 100%;
+            border-collapse: collapse; 
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Stagiaires MyBetaApps</h1>
+    <div id="ajoutStagiaire">
+        <h2>Ajouter un stagiaire</h2>
+        <label for="nomPrenom">Nom et Prénom:</label>
+        <input type="text" id="nomPrenom" placeholder="Nom ">
+        <label for="institut">Institut d'origine:</label>
+        <input type="text" id="institut" placeholder="Institut ">
+        <label for="service">Service de stage:</label>
+        <select id="service">
+            <option value="">---Selection---</option>
+            <option value="Développement">Développement</option>
+            <option value="DevOps">DevOps</option>
+        </select>
+        
+        <button onclick="ajouterStagiaire()">Enregistrer</button>
+    </div>
+
+    <div id="listeStagiaires">
+        
+        <table id="tableauStagiaires">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom et Prénom</th>
+                    <th>Institut d'origine</th>
+                    <th>Service de stage</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+    <script>
+        
+        var interns = [
+            { id: 2, nom: "Ali Ben Salah", institut: "ESSAT", service: "Développement" },
+            { id: 16, nom: "Aya Ben Salah", institut: "ENIG", service: "DevOps" },
+            { id: 28, nom: "Majed Ben Salah", institut: "ISIMG", service: "Développement" },
+            { id: 1, nom: "Salmen Ibn Salem", institut: "ESSAT", service: "DevOps" }
+            
+        ];
+
+        
+        function afficherStagiaires() {
+            var tableauStagiaires = document.getElementById("tableauStagiaires");
+            var tbody = tableauStagiaires.getElementsByTagName("tbody")[0];
+            tbody.innerHTML = ""; 
+            interns.forEach(function(intern) {
+                var row = "<tr>";
+                row += "<td>" + intern.id + "</td>";
+                row += "<td>" + intern.nom + "</td>";
+                row += "<td>" + intern.institut + "</td>";
+                row += "<td>" + intern.service + "</td>";
+                row += "<td><button style='color:white; background-color:blue;' onclick='supprimerStagiaire(" + intern.id + ")'>Supprimer</button></td>";
+                row += "</tr>";
+                tbody.innerHTML += row;
+            });
+        }
+
+        
+        function ajouterStagiaire() {
+            var nomPrenom = document.getElementById("nomPrenom").value;
+            var institut = document.getElementById("institut").value;
+            var service = document.getElementById("service").value;
+            var newId = interns.length > 0 ? interns[interns.length - 1].id + 1 : 1; // Generate new ID
+
+            
+            interns.push({ id: newId, nom: nomPrenom, institut: institut, service: service });
+
+           
+            afficherStagiaires();
+        }
+
+        
+        function supprimerStagiaire(id) {
+           
+            var index = interns.findIndex(function(intern) {
+                return intern.id === id;
+            });
+
+            
+            if (index !== -1) {
+                interns.splice(index, 1);
+            }
+
+            
+            afficherStagiaires();
+        }
+
+        
+        afficherStagiaires();
+    </script>
+</body>
+</html>
